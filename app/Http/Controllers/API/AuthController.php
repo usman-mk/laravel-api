@@ -17,11 +17,16 @@ class AuthController extends BaseController
      */
     public function register(Request $request)
     {
+        // Check if registration is enabled
+        if (!config('sanctum.api_registration')) {
+            return $this->sendError('Registration is disabled', [], 403);
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'c_password' => 'required|same:password',
+            'password_confirmation' => 'required|same:password',
         ]);
    
         if($validator->fails()){

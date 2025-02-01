@@ -64,4 +64,6 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
+    'api_registration' => env('API_REGISTRATION', true), // Default: true
+
 ];
