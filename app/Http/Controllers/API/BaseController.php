@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\JsonResponse;
 
 class BaseController extends Controller
 {
@@ -43,5 +45,20 @@ class BaseController extends Controller
 
 
         return response()->json($response, $code);
+    }
+
+    /**
+     * Handle validation errors in the same format as sendError.
+     *
+     * @param Validator $validator
+     * @return JsonResponse
+     */
+    public static function validationError(Validator $validator, $message = 'Validation Error.'): JsonResponse
+    {
+        return (new self)->sendError(
+            $message,
+            $validator->errors(),
+            422 // HTTP status code for validation errors
+        );
     }
 }
